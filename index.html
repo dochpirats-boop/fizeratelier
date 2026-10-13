@@ -120,7 +120,7 @@ h1,h2,h3{font-family:var(--display);font-weight:300;line-height:.95;margin:0;tex
 @media (max-width:1000px){.bn-side.bn-right{display:none}.bn-left{width:min(30vw,260px)}}
 @media (max-width:760px){
   .banner{min-height:min(100svh,860px);height:auto;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:92px var(--gut) 28px}
-  .bn-bg{background-image:url(img/hero-tall.jpg);background-position:28% 0}
+  .bn-bg{background-image:url(img/hero-tall.jpg);background-position:35% 20%}
   .bn-lines{grid-template-columns:repeat(2,1fr)}
   .bn-lines i:nth-child(n+3){display:none}
   .bn-lines span{top:78px;font-size:11px}
@@ -214,7 +214,7 @@ h1,h2,h3{font-family:var(--display);font-weight:300;line-height:.95;margin:0;tex
 .hand-note svg{display:block;margin-bottom:-14px}
 @media (max-width:900px){
   .hero .wrap{grid-template-columns:1fr}
-  .stage{width:min(82%,440px);margin-top:20px}
+  .stage{width:min(82%,440px);margin-top:96px}
   .hero-meta{margin-top:28px}
 }
 @media (max-width:520px){.swatches{right:-10%}.sw{width:42px}.caption{left:-4%}.hand-note{font-size:22px}}
@@ -322,7 +322,7 @@ section{scroll-margin-top:80px}
 .note::after{content:"";position:absolute;inset:9px;border:1.5px dashed var(--line);border-radius:2px;pointer-events:none}
 .note blockquote{margin:0;font-family:var(--hand);font-size:24px;line-height:1.25}
 .note footer{display:flex;align-items:center;gap:12px;margin-top:18px}
-.note .av{width:44px;aspect-ratio:3/4;border-radius:6px;overflow:hidden;flex:none}
+.note .av{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--tape,var(--blush));font-family:var(--display);font-style:italic;font-size:22px;color:var(--fg)}
 .note .av img{width:100%;height:100%;object-fit:cover;display:block}
 .note b{font-weight:600;font-size:13.5px;display:block}
 .note small{color:var(--muted);font-size:12px}
@@ -405,7 +405,7 @@ textarea{resize:vertical;min-height:90px;border:1.5px dashed var(--line);border-
     <a class="bn-btn" href="#pick"><span data-i="bn.cta">Discover the pieces</span><span>↓</span></a>
   </div>
   <aside class="bn-side bn-right">
-    <div class="thumb"><img src="img/446.jpg" alt=""></div>
+    <div class="thumb"><img src="img/447.jpg" alt=""></div>
     <h3 data-i="bn.cardT">When florals meet the body</h3>
     <p data-i="bn.cardP">Soft cotton, shaped seams and hand finishing. Clothes that follow you, not a trend.</p>
   </aside>
@@ -702,6 +702,7 @@ const P = [
   s:{en:['White','Linen','Wrap, tie waist','Bishop sleeves, lace edge'],uk:['Білий','Льон','На запах, із зав’язками','Рукави-єпископ, мереживний край']}},
 ];
 const HERO = ['sakura','coral','forget','kaftan','denim','rose'];
+const HERO_IMG = {sakura:'352',coral:'434',forget:'371',kaftan:'389',denim:'362',rose:'437'};
 const CATS = {all:{en:'All',uk:'Усе'},jackets:{en:'Jackets',uk:'Куртки'},tops:{en:'Corsets & tops',uk:'Корсети й топи'},dresses:{en:'Dresses',uk:'Сукні'},sets:{en:'Sets',uk:'Комплекти'}};
 const CAT1 = {jackets:{en:'Jacket',uk:'Куртка'},tops:{en:'Top',uk:'Топ'},dresses:{en:'Dress',uk:'Сукня'},sets:{en:'Set',uk:'Комплект'}};
 const SPEC = {en:['Colours','Make','Fit','Details'],uk:['Кольори','Техніка','Посадка','Деталі']};
@@ -792,8 +793,8 @@ function buildMarquee(){const s=T[L].mq.map(w=>`<span>${w}</span>`).join('');$('
 /* ---------- hero deck ---------- */
 let hi=0,timer=null,t0=0;const DUR=5200;
 const deck=$('#deck');
-HERO.forEach((id,k)=>{const p=byId(id);const c=document.createElement('div');c.className='card hide';c.dataset.k=k;c.innerHTML=`<img src="${img(p.imgs[0])}" alt="" ${k>1?'loading="lazy"':''}>`;deck.appendChild(c)});
-$('#swatches').innerHTML=HERO.map((id,k)=>`<button class="sw" role="tab" type="button" data-k="${k}" aria-label="${byId(id).n.en}"><img src="${img(byId(id).imgs[0])}" alt=""></button>`).join('');
+HERO.forEach((id,k)=>{const p=byId(id);const c=document.createElement('div');c.className='card hide';c.dataset.k=k;c.innerHTML=`<img src="${img(HERO_IMG[id])}" alt="" ${k>1?'loading="lazy"':''}>`;deck.appendChild(c)});
+$('#swatches').innerHTML=HERO.map((id,k)=>`<button class="sw" role="tab" type="button" data-k="${k}" aria-label="${byId(id).n.en}"><img src="${img(HERO_IMG[id])}" alt=""></button>`).join('');
 $$('.sw').forEach(b=>b.addEventListener('click',()=>{setHero(+b.dataset.k);restart()}));
 function setHero(k,silent){
   const prev=hi;hi=(k+HERO.length)%HERO.length;
@@ -923,7 +924,7 @@ const vid=$('#rackVid');if(reduce){vid.removeAttribute('autoplay');vid.pause()}
 /* ---------- reviews ---------- */
 function buildNotes(){
   $('#notes').innerHTML=NOTES.map(n=>`<figure class="note rv" style="--rot:${n.rot}deg;--tape:${n.tape};margin:0"><span class="sample">${T[L].sample}</span>
-  <blockquote>“${n[L]}”</blockquote><footer><div class="av"><img src="${img(n.img)}" alt="" loading="lazy"></div><div><b>${n.n}</b><small>${T[L].wore} ${byId(n.p).n[L]}</small></div></footer></figure>`).join('');observe();
+  <blockquote>“${n[L]}”</blockquote><footer><div class="av" aria-hidden="true">${n.n[0]}</div><div><b>${n.n}</b><small>${T[L].wore} ${byId(n.p).n[L]}</small></div></footer></figure>`).join('');observe();
 }
 
 /* ---------- order form ---------- */
